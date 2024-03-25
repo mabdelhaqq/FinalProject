@@ -36,40 +36,6 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Scheme = "Bearer"
     });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Id = "Bearer",
-                    Type = ReferenceType.SecurityScheme
-                },
-                Scheme = "oauth2",
-                In = ParameterLocation.Header
-            },
-            new List<string>()
-        }
-    });
-});
-var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("JWTSecret"));
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    //options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ValidateIssuer = false,
-        ValidateAudience = false,
-    };
 });
 var app = builder.Build();
 

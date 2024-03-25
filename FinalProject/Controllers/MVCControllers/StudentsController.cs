@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers.MVCControllers
 {
-    //[Authorize]
     public class StudentsController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -22,12 +21,14 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         // GET: Students
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Student.ToListAsync());
         }
 
         // GET: Students/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +47,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         // GET: Students/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +58,7 @@ namespace FinalProject.Controllers.MVCControllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Adress,PhoneNumber")] Student student)
         {
             if (ModelState.IsValid)
@@ -68,6 +71,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         // GET: Students/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,6 +92,7 @@ namespace FinalProject.Controllers.MVCControllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,Adress,PhoneNumber")] Student student)
         {
             if (id != student.Id)
@@ -119,6 +124,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         // GET: Students/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +145,7 @@ namespace FinalProject.Controllers.MVCControllers
         // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var student = await _context.Student.FindAsync(id);

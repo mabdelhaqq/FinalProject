@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers.MVCControllers
 {
-    //[Authorize]
+    [Authorize(Roles = "Admin")]
     public class StudentSubjectsController : Controller
     {
         private readonly FinalProjectContext _context;

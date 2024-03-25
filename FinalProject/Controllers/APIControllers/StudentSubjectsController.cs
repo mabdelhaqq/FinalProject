@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Data;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers.APIControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, User")]
     public class StudentSubjectsController : ControllerBase
     {
         private readonly FinalProjectContext _context;

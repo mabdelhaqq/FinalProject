@@ -5,11 +5,10 @@ using System.Diagnostics;
 
 namespace FinalProject.Controllers.MVCControllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

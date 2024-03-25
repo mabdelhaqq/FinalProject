@@ -1,4 +1,5 @@
-﻿using FinalProject.Models;
+﻿using FinalProject.Areas.Identity.Data;
+using FinalProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,11 @@ namespace FinalProject.Controllers.APIControllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<FinalProjectUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthController(UserManager<IdentityUser> userManager,
+        public AuthController(UserManager<FinalProjectUser> userManager,
             RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             _userManager = userManager;
@@ -40,7 +41,7 @@ namespace FinalProject.Controllers.APIControllers
                     new Models.Response { status = "Error", msg = "User already exist!" });
             }
 
-            IdentityUser user = new()
+            FinalProjectUser user = new()
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),

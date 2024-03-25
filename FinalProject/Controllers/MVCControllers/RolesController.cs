@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace FinalProject.Controllers.MVCControllers
         {
             _manager = roleManager;
         }
-
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var roles = await _manager.Roles.ToListAsync();
@@ -20,12 +21,14 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(IdentityRole role)
         {
             if (!await _manager.RoleExistsAsync(role.Name))
@@ -36,6 +39,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -54,6 +58,7 @@ namespace FinalProject.Controllers.MVCControllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id, IdentityRole role)
         {
             if (id != role.Id)
@@ -91,6 +96,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -108,6 +114,7 @@ namespace FinalProject.Controllers.MVCControllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -126,6 +133,7 @@ namespace FinalProject.Controllers.MVCControllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var role = await _manager.FindByIdAsync(id);
