@@ -2,7 +2,7 @@
 {
     public class LoginResponse
     {
-        public string username { get; set; }
-        public string token { get; set; }
+        public string UserName { get; set; }
+        public string Token { get; set; }
     }
 }

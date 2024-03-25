@@ -38,14 +38,14 @@ namespace FinalProject.Controllers.APIControllers
             if (userExist != null)
             {
                 return StatusCode(StatusCodes.Status403Forbidden,
-                    new Models.Response { status = "Error", msg = "User already exist!" });
+                    new Models.Response { Status = "Error", Msg = "User already exist!" });
             }
 
             FinalProjectUser user = new()
             {
                 Email = registerUser.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registerUser.Username
+                UserName = registerUser.UserName
             };
             if (await _roleManager.RoleExistsAsync(role))
             {
@@ -53,15 +53,15 @@ namespace FinalProject.Controllers.APIControllers
                 if (!result.Succeeded)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError,
-                   new Models.Response { status = "Error", msg = "User Failed to Create!" });
+                   new Models.Response { Status = "Error", Msg = "User Failed to Create!" });
                 }
                 await _userManager.AddToRoleAsync(user, role);
-                return Ok(new Models.Response { status = "Success", msg = "User Created successfully!" });
+                return Ok(new Models.Response { Status = "Success", Msg = "User Created successfully!" });
             }
             else
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new Models.Response { status = "Error", msg = "This Role does not exist" });
+                    new Models.Response { Status = "Error", Msg = "This Role does not exist" });
             }
         }
         [HttpPost("login")]
@@ -76,8 +76,8 @@ namespace FinalProject.Controllers.APIControllers
             {
                 return BadRequest("Please provide username and password");
             }
-            var user = await _userManager.FindByNameAsync(model.username);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, model.password))
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 return Unauthorized("Invalid Username and Password");
             }
@@ -90,7 +90,7 @@ namespace FinalProject.Controllers.APIControllers
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.Name, model.username),
+            new Claim(ClaimTypes.Name, model.UserName),
             new Claim(ClaimTypes.Role, string.Join(",", userRoles))
                 }),
                 Expires = DateTime.Now.AddHours(4),
@@ -100,7 +100,7 @@ namespace FinalProject.Controllers.APIControllers
             var token = TokenHandler.CreateToken(TokenDescriptor);
             var tokenString = TokenHandler.WriteToken(token);
 
-            var response = new LoginResponse { username = model.username, token = tokenString };
+            var response = new LoginResponse { UserName = model.UserName, Token = tokenString };
 
             return Ok(response);
         }

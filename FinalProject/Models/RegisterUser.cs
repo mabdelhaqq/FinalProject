@@ -5,7 +5,7 @@ namespace FinalProject.Models
     public class RegisterUser
     {
         [Required]
-        public string Username { get; set; }
+        public string UserName { get; set; }
         [Required]
         [EmailAddress]
         public string Email { get; set; }

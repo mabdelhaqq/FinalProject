@@ -5,8 +5,8 @@ namespace FinalProject.Models
     public class LoginUser
     {
         [Required]
-        public string username { get; set; }
+        public string UserName { get; set; }
         [Required]
-        public string password { get; set; }
+        public string Password { get; set; }
     }
 }
